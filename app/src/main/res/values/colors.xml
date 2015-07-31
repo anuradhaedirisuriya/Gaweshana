@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="primaryColorDark">#1976D2</color>
+    <color name="accentColor">#9C27B0</color>
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="windowBackground">#2196F3</color>
+    <color name="button_color">#F44336</color>
+    <color name="appBackground">#263238</color>
+    <color name="toolBar">#2196F3</color>
+
+</resources>
