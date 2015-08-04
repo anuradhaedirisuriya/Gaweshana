@@ -42,7 +42,8 @@
                 android:layout_height="wrap_content"
                 android:text="History"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"
+                android:onClick="history"/>
 
             <Button
                 android:id="@+id/feedback"
@@ -50,7 +51,8 @@
                 android:layout_height="wrap_content"
                 android:text="Feedback"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"
+                android:onClick="feedback"/>
 
             <Button
                 android:id="@+id/exit"
