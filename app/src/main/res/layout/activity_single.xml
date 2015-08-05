@@ -15,7 +15,8 @@
         android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:src="@drawable/home_logo" />
+        android:src="@drawable/home_logo"
+        />
 
     <ScrollView
         android:id="@+id/scroll"

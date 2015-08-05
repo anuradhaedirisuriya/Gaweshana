@@ -1,5 +1,7 @@
 package com.ucsc.gaweshana.gaweshanav3;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -19,9 +22,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 public class SingleActivity extends AppCompatActivity  {
@@ -50,7 +58,7 @@ public class SingleActivity extends AppCompatActivity  {
 
         final Button btnSpeak = (Button) findViewById(R.id.btnSpeak);
 
-        new NetLink().execute("http://gaweshana.pe.hu/",res);
+        new NetLink().execute("http://gaweshana.pe.hu/api/getArtifact/",res);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -102,11 +110,16 @@ public class SingleActivity extends AppCompatActivity  {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            tv.setText(s);
+           // Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
             try {
                 JSONObject jo=new JSONObject(s);
                 tv.setText(jo.getString("name"));
                 tv2.setText(jo.getString("description"));
+                String k=jo.getString("image");
+                k=k.replaceFirst(".","");
+                new FetchImageAsyncTask().execute("http://gaweshana.pe.hu/"+k,jo.getString("id"));
+               // Toast.makeText(getApplicationContext(),"http://gaweshana.pe.hu/"+k,Toast.LENGTH_LONG).show();
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -158,5 +171,110 @@ public class SingleActivity extends AppCompatActivity  {
         }
     }
 
+    class FetchImageAsyncTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
 
+            ImageView p=(ImageView)findViewById(R.id.img);
+            //p.setMaxWidth(l.getWidth());
+            File dir=new File("sdcard/gaweshana/");
+            if(!dir.exists()){
+                dir.mkdirs();
+            }
+            File img=new File("sdcard/gaweshana/" + s + ".jpeg");
+            if(img.exists()) {
+                Bitmap bitmap = BitmapFactory.decodeFile("sdcard/gaweshana/" + s + ".jpeg");
+                p.setImageBitmap(bitmap);
+            }else{
+                Toast.makeText(getApplicationContext(), "Sorry No Image available", Toast.LENGTH_LONG).show();
+                p.setImageResource(R.drawable.home_logo);
+            }
+
+
+
+
+
+
+
+            //p.setIma
+        }
+
+        @Override
+        protected String doInBackground(String... sUrl) {
+            InputStream input = null;
+            OutputStream output = null;
+            String u;
+            HttpURLConnection connection = null;
+            try {
+                Log.d("Image", sUrl[0]);
+                if (!sUrl[0].startsWith("http")) {
+                    u = "http://" + sUrl[0];
+                }
+                else{
+                    u= sUrl[0];
+                }
+
+                Log.d("Image", u);
+                URL url = new URL(u);
+                //Log.d("Image", "thumbs1.ebaystatic.com//m//mOR0AuMSi9LLnSjryx8wE3Q//140.jpg");
+                Log.d("Image", "con");
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+
+                // expect HTTP 200 OK, so we don't mistakenly save error report
+                // instead of the file
+                Log.d("Image", "if");
+                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    return "Server returned HTTP " + connection.getResponseCode()
+                            + " " + connection.getResponseMessage();
+                }
+
+                // this will be useful to display download percentage
+                // might be -1: server did not report the length
+                int fileLength = connection.getContentLength();
+
+                // download the file
+                input = connection.getInputStream();
+                Log.d("Image", "save");
+                if (sUrl[1]!=null) {
+                    output = new FileOutputStream("sdcard/gaweshana/"+sUrl[1]+".jpeg");
+                }
+                Log.d("Image", "byte");
+                byte data[] = new byte[4096];
+                long total = 0;
+                int count;
+                while ((count = input.read(data)) != -1) {
+                    // allow canceling with back button
+                    if (isCancelled()) {
+                        input.close();
+                        return null;
+                    }
+                    total += count;
+                    // publishing the progress....
+                    //if (fileLength > 0) // only if total length is known
+                    //publishProgress((int) (total * 100 / fileLength));
+                    output.write(data, 0, count);
+                }
+            } catch (Exception e) {
+                Log.d("Image", e.toString());
+                e.getStackTrace();
+                e.printStackTrace();
+                return e.toString();
+            } finally {
+                try {
+                    if (output != null)
+                        output.close();
+                    if (input != null)
+                        input.close();
+                } catch (IOException ignored) {
+                }
+
+                if (connection != null)
+                    connection.disconnect();
+            }
+            return sUrl[1];
+
+        }
+    }
 }
