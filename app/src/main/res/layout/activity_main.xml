@@ -37,15 +37,6 @@
                 android:onClick="scan"/>
 
             <Button
-                android:id="@+id/history"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:text="History"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:onClick="history"/>
-
-            <Button
                 android:id="@+id/feedback"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"

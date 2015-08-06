@@ -17,9 +17,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     public void feedback(View view) {
-        startActivity(new Intent(MainActivity.this, SingleActivity.class));
+        startActivity(new Intent(MainActivity.this, FeedbackActivity.class));
     }
     public void scan(View view) {
         startActivity(new Intent(MainActivity.this, ScanActivity.class));

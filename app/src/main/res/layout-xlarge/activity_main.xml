@@ -36,14 +36,6 @@
             android:layout_gravity="center"
             android:textSize="30sp" />
 
-        <Button
-            android:id="@+id/history"
-            android:layout_width="350dp"
-            android:layout_height="70dp"
-            android:text="History"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:textSize="30sp" />
 
         <Button
             android:id="@+id/feedback"

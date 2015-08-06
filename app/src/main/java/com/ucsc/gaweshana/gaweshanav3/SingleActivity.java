@@ -4,11 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,13 +32,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 
-public class SingleActivity extends AppCompatActivity  {
+public class SingleActivity extends AppCompatActivity  implements TextToSpeech.OnInitListener {
 
     TextView tv;
     TextView tv2;
     ImageView img;
+    TextToSpeech tts;
+    TextView playtext;
 
 
 
@@ -56,7 +61,26 @@ public class SingleActivity extends AppCompatActivity  {
         tv2=(TextView)findViewById(R.id.desc);
         tv2.setText(res);
 
-        final Button btnSpeak = (Button) findViewById(R.id.btnSpeak);
+        tts = new TextToSpeech(SingleActivity.this, SingleActivity.this);
+        final TextView btn = (TextView) findViewById(R.id.playtext);
+        final TextView t = (TextView) findViewById(R.id.desc);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                if (!tts.isSpeaking()) {
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "sampletext");
+                    tts.speak(t.getText().toString(), TextToSpeech.QUEUE_ADD, params);
+                    btn.setVisibility(Button.GONE);
+                } else {
+                    tts.stop();
+                }
+
+            }
+        });
+
 
         new NetLink().execute("http://gaweshana.pe.hu/api/getArtifact/",res);
 
@@ -101,6 +125,11 @@ public class SingleActivity extends AppCompatActivity  {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onInit(int status) {
+
+    }
+
     class NetLink extends AsyncTask<String,Void,String>{
         @Override
         protected String doInBackground(String... params) {
@@ -116,7 +145,7 @@ public class SingleActivity extends AppCompatActivity  {
                 tv.setText(jo.getString("name"));
                 tv2.setText(jo.getString("description"));
                 String k=jo.getString("image");
-                k=k.replaceFirst(".","");
+                //k=k.replaceFirst(".","");
                 new FetchImageAsyncTask().execute("http://gaweshana.pe.hu/"+k,jo.getString("id"));
                // Toast.makeText(getApplicationContext(),"http://gaweshana.pe.hu/"+k,Toast.LENGTH_LONG).show();
 
@@ -182,9 +211,9 @@ public class SingleActivity extends AppCompatActivity  {
             if(!dir.exists()){
                 dir.mkdirs();
             }
-            File img=new File("sdcard/gaweshana/" + s + ".jpeg");
+            File img=new File("sdcard/gaweshana/" + s + ".jpg");
             if(img.exists()) {
-                Bitmap bitmap = BitmapFactory.decodeFile("sdcard/gaweshana/" + s + ".jpeg");
+                Bitmap bitmap = BitmapFactory.decodeFile("sdcard/gaweshana/" + s + ".jpg");
                 p.setImageBitmap(bitmap);
             }else{
                 Toast.makeText(getApplicationContext(), "Sorry No Image available", Toast.LENGTH_LONG).show();
@@ -238,7 +267,7 @@ public class SingleActivity extends AppCompatActivity  {
                 input = connection.getInputStream();
                 Log.d("Image", "save");
                 if (sUrl[1]!=null) {
-                    output = new FileOutputStream("sdcard/gaweshana/"+sUrl[1]+".jpeg");
+                    output = new FileOutputStream("sdcard/gaweshana/"+sUrl[1]+".jpg");
                 }
                 Log.d("Image", "byte");
                 byte data[] = new byte[4096];
@@ -277,4 +306,30 @@ public class SingleActivity extends AppCompatActivity  {
 
         }
     }
+
+    public void onUtteranceCompleted(String utteranceId) {
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(SingleActivity.this, "Utterence complete", Toast.LENGTH_SHORT).show();
+                TextView btn = (TextView) findViewById(R.id.playtext);
+                btn.setVisibility(Button.VISIBLE);
+
+            }
+        });
+
+    }
+
+    @Override
+    protected void onDestroy(){
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+            tts = null;
+        }
+        super.onDestroy();
+    }
+
+
 }

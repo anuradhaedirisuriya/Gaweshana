@@ -27,7 +27,7 @@
             <ImageView
                 android:id="@+id/img"
                 android:layout_width="fill_parent"
-                android:layout_height="300dp"
+                android:layout_height="600dp"
                 android:src="@drawable/display" />
 
 
@@ -37,14 +37,14 @@
                 android:layout_below="@+id/img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginBottom="50dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="50dp"
                 android:text="hello"
                 android:textColor="#ffffff"
                 android:textIsSelectable="true"
-                android:textSize="20sp"
+                android:textSize="40sp"
                 android:textStyle="bold" />
 
 
@@ -54,13 +54,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginBottom="50dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:text="hello"
                 android:textColor="#ffffff"
-                android:textSize="15sp" />
+                android:textSize="30sp" />
 
         </RelativeLayout>
     </ScrollView>
@@ -82,7 +81,7 @@
         android:text="Speak"
         android:textColor="#ffffff"
         android:textIsSelectable="true"
-        android:textSize="20sp"
+        android:textSize="30sp"
         android:textStyle="bold" />
 
 

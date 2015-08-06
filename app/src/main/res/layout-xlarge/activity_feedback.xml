@@ -14,19 +14,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/app_bar"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="50dp"
         android:text="Add your feedback"
         android:textColor="#ffffff"
-        android:textSize="17dip" />
+        android:textSize="40sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/feedback"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp">
 
         <!-- Name Label -->
         <TextView
@@ -36,17 +38,22 @@
             android:paddingRight="10dp"
             android:paddingTop="10dp"
             android:text="Artifact Name"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:textSize="30sp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp" />
 
         <!-- Input Name -->
         <EditText
             android:id="@+id/inputName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="30dp"
             android:singleLine="true"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp" />
 
         <!-- Description Label -->
         <TextView
@@ -56,18 +63,23 @@
             android:paddingRight="10dp"
             android:paddingTop="10dp"
             android:text="Feedback"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:textSize="30sp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp" />
 
         <!-- Input description -->
         <EditText
             android:id="@+id/inputDesc"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="30dp"
             android:gravity="top"
-            android:lines="4"
-            android:textColor="#ffffff" />
+            android:lines="10"
+            android:textColor="#ffffff"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp" />
 
         <Button
             android:id="@+id/exit"
@@ -77,7 +89,9 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:onClick="submit"
-            android:text="Submit" />
+            android:text="Submit"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp" />
     </LinearLayout>
 
 
